@@ -166,6 +166,5 @@ For detailed performance results, complexity analysis, scalability observations,
 
 ## 📬 Contact Information
 
-- **Name**: Bharadwaj Manne
-- **GitHub**: [Bharadwaj-1953](https://github.com/Bharadwaj-1953)
-- **LinkedIn**: [LinkedIn Profile](https://www.linkedin.com/in/bharadwaj-manne/)
+- **Email**: manne.bharadwaj.1953@gmail.com
+- **LinkedIn**: [Bharadwaj Manne](https://www.linkedin.com/in/bharadwaj-manne-711476249/)
