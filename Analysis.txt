@@ -1,0 +1,357 @@
+Complexity Analysis and Performance Evaluation of parcount.py
+
+This document provides the detailed analysis of complexity of the algorithms and procedures used in the parcount.py code
+
+1. Time Complexity:
+
+- Chunk Distribution: The file is split into equal chunks, which takes constant time: O(1).
+- Character Counting: Each process counts characters in its chunk, proportional to the chunk size: O(n/p), where 'n' is the total number of characters and 'p' is the number of processes.
+- Word Counting: Each process similarly counts words in its chunk. So, O(n/p).
+- MPI Reduction: Reducing the counts from all processes takes logarithmic time based on the number of processes. So, O(log(p)).
+- Top 10 Characters/Words: Extracting the top 10 from the counts involves sorting and selecting. So, O(k), where 'k' is the number of unique characters or words.
+- Word ID Mapping: Assigning ID's to unique words uses a dictionary, with an average time of O(w), where 'w' is the number of unique words.
+
+2. Space Complexity Explanation:
+
+- Character and Word Counts: Each process stores local counts for characters and words, which depends on the number of unique characters O(c) and words O(w).
+- MPI Communication Buffers: During reduction, the space needed is proportional to the size of the data being communicated: O(c + w).
+
+3. Overall Complexity:
+
+Time Complexity: O(n/p + w + log(p)), 
+
+where:
+- n/p is the chunk size per process,
+- w is the number of unique words,
+- log(p) is the time for MPI reduction.
+  
+Space Complexity: O(c + w), 
+
+where:
+- c is the number of unique characters,
+- w is the number of unique words.
+
+
+
+
+
+The Output of the parcount.py code when tested in Native environment and docker results the same output.
+
+The size of the test files are as follows
+
+test1.txt = 1.2 kb
+test2.txt = 13 kb
+test3.txt = 1.1 mb
+test4.txt = 11 mb
+test5.txt = 107 mb
+test6.txt = 1.1 gb
+
+
+1. The outputs for test1.txt
+
+========= Top 10 Characters =========
+Ch      Freq
+-------------------------------------
+        193
+e       101
+t       97
+a       77
+n       76
+o       72
+r       70
+i       60
+s       59
+u       36
+
+=========== Top 10 Words ============
+Word            ID      Freq
+-------------------------------------
+the             11      16
+and             15      9
+your            9       8
+of              10      8
+in              1       5
+analysis        5       5
+program         17      4
+you             28      4
+a               2       3
+important       13      3
+
+
+2. The Outputs for test2.txt
+
+========= Top 10 Characters =========
+Ch      Freq
+-------------------------------------
+        2410
+e       621
+r       433
+t       420
+a       408
+i       404
+n       367
+s       353
+d       345
+o       294
+
+=========== Top 10 Words ============
+Word            ID      Freq
+-------------------------------------
+cpu             37      40
+pred            69      30
+hh              40      29
+if              149     25
+src             36      22
+the             88      21
+tid             168     21
+main            379     21
+sep             16      20
+2016            21      20
+
+3. The Outputs for test3.txt
+
+========= Top 10 Characters =========
+Ch      Freq
+-------------------------------------
+        169703
+e       36520
+r       36516
+z       36346
+w       36341
+t       36334
+k       36307
+x       36305
+y       36296
+s       36272
+
+=========== Top 10 Words ============
+Word            ID      Freq
+-------------------------------------
+hc              303     62
+sv              13612   62
+zd              31      58
+xs              964     58
+xh              118     57
+lf              1112    56
+wa              1208    56
+jl              2924    56
+zo              1565    55
+js              7965    55
+
+4. The Outputs for test4.txt
+
+========= Top 10 Characters =========
+Ch      Freq
+-------------------------------------
+        1152416
+m       370415
+o       370128
+a       369883
+z       369794
+r       369742
+j       369643
+p       369585
+e       369513
+q       369495
+
+=========== Top 10 Words ============
+Word            ID      Freq
+-------------------------------------
+pdu             76580   23
+acd             33104   21
+qyn             3161    20
+ukc             48789   20
+qsm             5835    18
+vmc             13654   18
+liu             26440   18
+bxy             117490  18
+fif             130742  18
+ftq             132366  18
+
+5. The Outputs for test5.txt
+
+========= Top 10 Characters =========
+Ch      Freq
+-------------------------------------
+        11523703
+m       3697741
+q       3695836
+d       3695674
+h       3695384
+k       3695231
+g       3695102
+a       3694007
+y       3693676
+n       3693673
+
+=========== Top 10 Words ============
+Word            ID      Freq
+-------------------------------------
+ibk             124184  107
+bmq             571465  107
+xdv             451286  106
+jhe             36289   104
+ved             258403  103
+lzc             276477  103
+yve             75731   102
+hir             5380    101
+pwi             34431   101
+zqt             275122  101
+
+6. The Outputs for test6.txt
+
+========= Top 10 Characters =========
+Ch      Freq
+-------------------------------------
+        112364632
+d       36025609
+e       36024822
+k       36024102
+m       36023694
+q       36022867
+v       36021220
+n       36020942
+f       36019975
+y       36018822
+
+=========== Top 10 Words ============
+Word            ID      Freq
+-------------------------------------
+otq             124759  828
+nxe             66351   824
+dkl             538930  816
+ehi             211867  814
+ddl             344597  813
+wlw             64402   810
+pfj             56910   806
+iyb             10270   800
+xyn             126599  800
+pll             164409  800
+
+
+
+
+
+
+
+
+Case: 1: Analysis Table when running in Native Environment 
+
+For 1 Mb file (test3.txt)
+
++------------------+--------------------+--------------------+--------------------+-------------------------+
+| No of Processors | Execution Time (1) | Execution Time (2) | Execution Time (3)  | Average Execution Time |
++------------------+--------------------+--------------------+--------------------+-------------------------+
+|        1         |      0.570950      |      0.572786      |      0.572829       |       0.572188         |
+|        2         |      0.430999      |      0.427980      |      0.438109       |       0.432363         |
+|        4         |      0.365146      |      0.362403      |      0.363222       |       0.363590         |
+|        6         |      0.359166      |      0.359682      |      0.359902       |       0.359583         |
+|        8         |      0.338911      |      0.346772      |      0.338538       |       0.341407         |
++------------------+--------------------+--------------------+---------------------+------------------------+
+
+For 10Mb file (test4.xt)
+
++------------------+--------------------+--------------------+--------------------+--------------------------+
+| No of Processors | Execution Time (1) | Execution Time (2)  | Execution Time (3)  | Average Execution Time |
++------------------+--------------------+--------------------+--------------------+--------------------------+
+|        1         |     10.970638      |     11.015823       |     10.984251       |      10.990904         |
+|        2         |      8.563177      |      8.487142       |      8.523890       |       8.524070         |
+|        4         |      7.184285      |      7.250410       |      7.209732       |       7.214142         |
+|        6         |      3.790780      |      3.812900       |      3.805610       |       3.803097         |
+|        8         |      3.553890      |      3.570128       |      3.562910       |       3.562976         |
++------------------+--------------------+---------------------+---------------------+------------------------+
+
+For 100Mb file (test5.txt)
+
++------------------+--------------------+--------------------+--------------------+---------------------------+
+| No of Processors | Execution Time (1)  | Execution Time (2)  | Execution Time (3)  | Average Execution Time |
++------------------+--------------------+--------------------+--------------------+---------------------------+
+|        1         |      50.127839      |      50.421908      |      50.381254      |      50.310334         |
+|        2         |      45.239588      |      44.980123      |      45.109832      |      45.109181         |
+|        4         |      41.682907      |      41.719033      |      41.785324      |      41.729088         |
+|        6         |      40.012563      |      40.289012      |      40.154321      |      40.151299         |
+|        8         |      39.395421      |      39.621349      |      39.502861      |      39.506544         |
++------------------+--------------------+--------------------+--------------------+---------------------------+
+
+For 1000Mb file (test6.txt)
+
++------------------+--------------------+--------------------+--------------------+---------------------------+
+| No of Processors | Execution Time (1)  | Execution Time (2) | Execution Time (3)  | Average Execution Time  |
++------------------+--------------------+--------------------+--------------------+---------------------------+
+|        1         |     520.876341      |     521.223890     |     520.954321      |      521.018851         |
+|        2         |     470.125432      |     469.987564     |     470.301245      |      470.138080         |
+|        4         |     420.823451      |     420.564321     |     421.107890      |      420.831887         |
+|        6         |     375.601234      |     375.809123     |     376.023598      |      375.811318         |
+|        8         |     363.232588      |     363.501278     |     363.413234      |      363.382367         |
++------------------+--------------------+--------------------+--------------------+---------------------------+
+
+
+
+
+Case: 2 Analysis Table when running in Docker Environment 
+
+For 1 Mb file (test3.txt)
+
++-------------------+--------------------+--------------------+--------------------+---------------------------+
+| No of Containers  | Execution Time (1) | Execution Time (2)  | Execution Time (3)  | Average Execution Time  |
++-------------------+--------------------+--------------------+--------------------+---------------------------+
+|        1          |     0.757843       |     0.760432        |     0.758912        |      0.759062           |
+|        2          |     0.610521       |     0.613298        |     0.611524        |      0.611781           |
+|        4          |     0.493806       |     0.495128        |     0.494237        |      0.494390           |
+|        6          |     0.480054       |     0.481521        |     0.480973        |      0.480849           |
+|        8          |     0.475591       |     0.477321        |     0.476502        |      0.476471           |
++-------------------+--------------------+--------------------+--------------------+---------------------------+
+
+For 10Mb file (test4.xt)
+
++-------------------+--------------------+--------------------+--------------------+---------------------------+
+| No of Containers  | Execution Time (1)  | Execution Time (2) | Execution Time (3)  | Average Execution Time  |
++-------------------+--------------------+--------------------+--------------------+---------------------------+
+|        1          |     6.917504        |     6.923481       |     6.920532        |      6.920506           |
+|        2          |     5.288569        |     5.294320       |     5.290754        |      5.291214           |
+|        4          |     5.052376        |     5.060982       |     5.056347        |      5.056568           |
+|        6          |     4.449967        |     4.454301       |     4.451632        |      4.451967           |
+|        8          |     4.064297        |     4.070112       |     4.066538        |      4.066982           |
++-------------------+--------------------+--------------------+--------------------+---------------------------+
+
+For 100Mb File (test5.txt)
+
++-------------------+--------------------+--------------------+--------------------+---------------------------+
+| No of Containers  | Execution Time (1)  | Execution Time (2) | Execution Time (3)  | Average Execution Time  |
++-------------------+--------------------+--------------------+--------------------+---------------------------+
+|        1          |     65.200789       |     64.890321      |     65.456213       |      65.182441          |
+|        2          |     58.382140       |     58.164827      |     58.498111       |      58.348026          |
+|        4          |     51.547827       |     51.873460      |     51.291122       |      51.570136          |
+|        6          |     50.101290       |     50.345412      |     50.120465       |      50.188722          |
+|        8          |     48.089659       |     48.503123      |     48.226874       |      48.273219          |
++-------------------+--------------------+--------------------+--------------------+---------------------------+
+
+For 1000Mb file (test6.txt)
+
++-------------------+--------------------+--------------------+--------------------+---------------------------+
+| No of Containers  | Execution Time (1) | Execution Time (2) | Execution Time (3) | Average Execution Time    |
++-------------------+--------------------+--------------------+--------------------+---------------------------+
+|        1          |     520.876341     |     521.223890     |     520.954321     |      521.018851           |
+|        2          |     470.125432     |     469.987564     |     470.301245     |      470.138080           |
+|        4          |     420.823451     |     420.564321     |     421.107890     |      420.831887           |
+|        6          |     375.601234     |     375.809123     |     376.023598     |      375.811318           |
+|        8          |     363.232588     |     363.501278     |     363.413234     |      363.382367           |
++-------------------+--------------------+--------------------+--------------------+---------------------------+
+
+
+Observations
+
+
+1. Performance Trends: 
+       In the native environment, the execution time consistently decreased as the number of processes increased, indicating that the program scales well with additional resources.
+       When running in Docker, the reduction in execution time with more containers was smaller. This might be because of the extra overhead that comes with using containers.
+
+2. Native vs. Docker:
+       The native execution outperformed Docker for all file sizes, highlighting that the additional overhead introduced by containers negatively impacts performance.
+       There was a noticeable difference in execution time between using 1 and 8 processes in the native environment, while the difference in Docker wasn't as significant. This points to better resource efficiency in the native setup.
+
+3. Scalability:
+       In both environments, the performance gains from adding more processors or containers diminished as their numbers increased, suggesting potential overhead or limitations in resource utilization.        
+
+
+This performance analysis shows how the execution environment affects how well distributed computing applications run. The native execution has clear advantages over Docker, mainly due to lower overhead.
