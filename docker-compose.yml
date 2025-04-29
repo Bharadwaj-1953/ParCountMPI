@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  mpi-node1-bm:
+    image: mpi-docker-bm
+    container_name: mpi-node1-bm
+    hostname: mpi-node1-bm
+    networks:
+      - mpi-network-bm
+    volumes:
+      - .:/workspace
+
+  mpi-node2-bm:
+    image: mpi-docker-bm
+    container_name: mpi-node2-bm
+    hostname: mpi-node2-bm
+    networks:
+      - mpi-network-bm
+    volumes:
+      - .:/workspace
+
+  mpi-node3-bm:
+    image: mpi-docker-bm
+    container_name: mpi-node3-bm
+    hostname: mpi-node3-bm
+    networks:
+      - mpi-network-bm
+    volumes:
+      - .:/workspace
+
+  mpi-node4-bm:
+    image: mpi-docker-bm
+    container_name: mpi-node4-bm
+    hostname: mpi-node4-bm
+    networks:
+      - mpi-network-bm
+    volumes:
+      - .:/workspace
+
+  mpi-node5-bm:
+    image: mpi-docker-bm
+    container_name: mpi-node5-bm
+    hostname: mpi-node5-bm
+    networks:
+      - mpi-network-bm
+    volumes:
+      - .:/workspace
+
+  mpi-node6-bm:
+    image: mpi-docker-bm
+    container_name: mpi-node6-bm
+    hostname: mpi-node6-bm
+    networks:
+      - mpi-network-bm
+    volumes:
+      - .:/workspace
+
+  mpi-node7-bm:
+    image: mpi-docker-bm
+    container_name: mpi-node7-bm
+    hostname: mpi-node7-bm
+    networks:
+      - mpi-network-bm
+    volumes:
+      - .:/workspace
+
+  mpi-node8-bm:
+    image: mpi-docker-bm
+    container_name: mpi-node8-bm
+    hostname: mpi-node8-bm
+    networks:
+      - mpi-network-bm
+    volumes:
+      - .:/workspace
+
+networks:
+  mpi-network-bm:
+    driver: bridge
